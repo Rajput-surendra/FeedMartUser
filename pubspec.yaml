@@ -47,6 +47,7 @@ dependencies:
   showcaseview: any
   sms_autofill: ^2.0.1
   intl: 0.17.0
+  package_info_plus:
 #  url_launcher: ^5.7.10
   country_code_picker: ^2.0.1
   google_maps_flutter: ^2.0.6

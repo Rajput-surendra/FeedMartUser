@@ -214,7 +214,7 @@ class StateOrder extends State<OrderDetail>
         appBar:
             getSimpleAppBar(getTranslated(context, "ORDER_DETAIL")!, context),
         body: _isNetworkAvail
-            ? Stack(
+            ? Stack (
                 children: [
                   Column(
                     children: [
