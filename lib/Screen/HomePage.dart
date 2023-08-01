@@ -10697,6 +10697,13 @@ class _HomePageState extends State<HomePage>
       });
     });
   }
+  String _selectedOption = 'Option 1'; // Default selected option
+
+  void _handleRadioValueChange1(String value) {
+    setState(() {
+      _selectedOption = value; // Update the selected option when a radio button is tapped
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11388,10 +11395,11 @@ class _HomePageState extends State<HomePage>
                   ),
                   InkWell(
                     onTap: ()async{
-                      print("hbdfhksdfdfdfhdfkhfgb");
-                      //getSetting1();
-                      //
-                      print("this is aaaa====${items[0].remainingAmount}rrrrrr   ${upi}sdsdsd  ${upi}");
+                     print('_________Surendra_________');
+
+                     showDialogBox();
+                     //_showBottomSheet(context);
+                     print("this is aaaa====${items[0].remainingAmount}rrrrrr   ${upi}sdsdsd  ${upi}");
                       UpiPayment upiPayment =  UpiPayment("${items[0].remainingAmount}", "${upi}", context, (value) {
                         print("checking value status here ${value.status}");
                         if(value.status==UpiTransactionStatus.success){
@@ -11418,15 +11426,14 @@ class _HomePageState extends State<HomePage>
                         }
                       }, items[0].remainingAmount.toString());
 
-
-                      upiPayment.initPayment();
+                      // upiPayment.initPayment(); ye bala uncomment karna hai===========================
                       // doPayment();
                       //  addMony("transID");
                       // _razorpay = Razorpay();
                       // _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
                       // _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
                       // _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-                      razorpayPayment(items[0].remainingAmount.toString(),);
+                      //razorpayPayment(items[0].remainingAmount.toString(),); ye bala uncomment karna hai===========================
 
                       // showDialog(
                       //   context: context,
@@ -11474,6 +11481,7 @@ class _HomePageState extends State<HomePage>
             ]),
           ]),
         ),
+
         onTap: () async {
           FocusScope.of(context).unfocus();
           final result = await Navigator.push(
@@ -11577,7 +11585,211 @@ class _HomePageState extends State<HomePage>
         SizedBox();
     }
   }
+  int _value = 0;
+  bool isMobile = false;
+  bool isSendOtp = false;
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController amtC =  TextEditingController();
+  showDialogBox(){
+    return showDialog(
+      context: context,
+      builder: (context) {
+        // String contentText = "Content of Dialog";
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Remaining Amount"),
+              // content: Text(contentText),
+              actions: [
 
+                Form(
+                   key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Radio(
+                            value: 1,
+                            fillColor: MaterialStateColor.resolveWith(
+                                    (states) =>  colors.secondary),
+                            activeColor:  colors.secondary,
+                            groupValue: _value,
+                            onChanged: (int? value) {
+                              setState(() {
+                                _value = value!;
+                                isMobile = false;
+                              });
+                            },
+                          ),
+                          Text(
+                            "$CUR_CURRENCY ${items[0].remainingAmount}",
+                            style: TextStyle(
+                                color: colors.secondary, fontSize: 21),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Radio(
+                              value: 2,
+                              fillColor: MaterialStateColor.resolveWith(
+                                      (states) => colors.secondary),
+                              activeColor:   colors.secondary,
+                              groupValue: _value,
+                              onChanged: (int? value) {
+                                setState(() {
+                                  _value = value!;
+                                  isMobile = true;
+                                });
+                              }),
+                          Container(
+                            height: 50,
+                            width:200,
+                            child: TextFormField(
+                                     decoration: InputDecoration(
+                                     contentPadding: EdgeInsets.only(top: 5,left: 5  ),
+                                border:OutlineInputBorder(),
+                                    hintText: "Amount"
+                                ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter Amount';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      InkWell(
+                        onTap: (){
+                          if(_formKey.currentState!.validate()){
+                            Fluttertoast.showToast(msg: "Enter Amount");
+                          }
+                          else{
+
+                          }
+                        },
+                        child: Container(
+                        height: 30,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: colors.secondary,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                            child: Center(child: Text("Pay Amount",style: TextStyle(
+                                color: colors.whiteTemp
+
+                            ),))
+                        ,
+                  ),
+                      ),
+                  // TextButton(
+                  //   onPressed: () => Navigator.pop(context),
+                  //   child: Text("Pay"),
+                  // ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       contentText = "Changed Content of Dialog";
+                  //     });
+                  //   },
+                  //   child: Text("Change"),
+                  // ),
+                    ],
+                  ),
+                )
+              ]
+            );
+          },
+        );
+      },
+    );
+  }
+   _showBottomSheet(BuildContext context) {
+
+     showModalBottomSheet(
+       context: context,
+       builder: (BuildContext context) {
+         return Container(
+           padding: EdgeInsets.all(16),
+           child: Column(
+             mainAxisSize: MainAxisSize.min,
+             crossAxisAlignment: CrossAxisAlignment.stretch,
+             children: [
+               Text(
+                 'This is a Modal Bottom Sheet',
+                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                 textAlign: TextAlign.center,
+               ),
+               SizedBox(height: 16),
+               Column(
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                   Row(
+                       children: [
+                         Radio(
+                           value: 1,
+                           fillColor: MaterialStateColor.resolveWith(
+                                   (states) =>  colors.secondary),
+                           activeColor:  colors.secondary,
+                           groupValue: _value,
+                           onChanged: (int? value) {
+                             setState(() {
+                               _value = value!;
+                               isMobile = false;
+                             });
+                           },
+                         ),
+                         Text(
+                           "BALANCE : $CUR_CURRENCY ${items[0].remainingAmount}",
+                           style: TextStyle(
+                               color: colors.secondary, fontSize: 21),
+                         ),
+                       ],
+                   ),
+                   SizedBox(height: 10,),
+                  Row(
+                    children: [
+                      Radio(
+                          value: 2,
+                          fillColor: MaterialStateColor.resolveWith(
+                                  (states) => colors.secondary),
+                          activeColor:   colors.secondary,
+                          groupValue: _value,
+                          onChanged: (int? value) {
+                            setState(() {
+                              _value = value!;
+                              isMobile = true;
+                            });
+                          }),
+                       Container(
+                         height: 50,
+                         width: 250,
+                         child: TextField(
+                           decoration: InputDecoration(
+
+                             hintText: "Amount"
+                           )
+                           ),
+                       ),
+                    ],
+                  ),
+                   
+                 ],
+               ),
+              
+             ],
+           ),
+         );
+       },
+     );
+   }
   _singleSection(int index) {
     Color back;
     int pos = index % 5;

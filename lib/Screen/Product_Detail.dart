@@ -1253,9 +1253,11 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     }
 
     showModalBottomSheet(
+
         context: context,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
+
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10))),
         builder: (builder) {
