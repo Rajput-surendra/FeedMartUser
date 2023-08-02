@@ -10230,6 +10230,7 @@ class _HomePageState extends State<HomePage>
   Razorpay? _razorpay;
   TextEditingController promoC = new TextEditingController();
   TextEditingController noteC = new TextEditingController();
+  TextEditingController amtC =  TextEditingController();
   StateSetter? checkoutState;
   final paystackPlugin = PaystackPlugin();
   bool deliverable = false;
@@ -10439,8 +10440,6 @@ class _HomePageState extends State<HomePage>
   // }
 
   List<StateData> getStateModel = [];
-
-
   Future<void> checkFirstTime()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen1 = (prefs.getBool('seen1') ?? false);
@@ -10707,7 +10706,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // appBar: AppBar(
       //
       //   backgroundColor: Colors.red,
@@ -11398,66 +11396,30 @@ class _HomePageState extends State<HomePage>
                      print('_________Surendra_________');
 
                      showDialogBox();
-                     //_showBottomSheet(context);
-                     print("this is aaaa====${items[0].remainingAmount}rrrrrr   ${upi}sdsdsd  ${upi}");
-                      UpiPayment upiPayment =  UpiPayment("${items[0].remainingAmount}", "${upi}", context, (value) {
-                        print("checking value status here ${value.status}");
-                        if(value.status==UpiTransactionStatus.success){
-                          Navigator.pop(context);
-                          //placeOrder('',upiResponse: value);
-                          addMony("transID");
-                        } else if(value.status==UpiTransactionStatus.failure){
-                          // setState((){
-                          //   _placeOrder = true;
-                          // });
-                          Fluttertoast.showToast(msg: "Payment Failed");
-                        }
-                        else if(value.status == UpiTransactionStatus.failedToLaunch){
-                          // setState((){
-                          //   _placeOrder = true;
-                          // });
-                          Fluttertoast.showToast(msg: "Payment Failed");
-                        }
-                        else{
-                          // setState((){
-                          //   _placeOrder = true;
-                          // });
-                          Fluttertoast.showToast(msg: "Payment Failed");
-                        }
-                      }, items[0].remainingAmount.toString());
 
-                      // upiPayment.initPayment(); ye bala uncomment karna hai===========================
-                      // doPayment();
-                      //  addMony("transID");
-                      // _razorpay = Razorpay();
-                      // _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-                      // _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-                      // _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-                      //razorpayPayment(items[0].remainingAmount.toString(),); ye bala uncomment karna hai===========================
+                  //    print("this is aaaa====${items[0].remainingAmount}rrrrrr   ${upi}sdsdsd  ${upi}");
+                  //     UpiPayment upiPayment =  UpiPayment("${items[0].remainingAmount}", "${upi}", context, (value) {
+                  //       print("checking value status here ${value.status}");
+                  //       if(value.status==UpiTransactionStatus.success){
+                  //         Navigator.pop(context);
+                  //         addMony("transID");
+                  //       } else if(value.status==UpiTransactionStatus.failure){
+                  //         Fluttertoast.showToast(msg: "Payment Failed");
+                  //       }
+                  //       else if(value.status == UpiTransactionStatus.failedToLaunch){
+                  //
+                  //         Fluttertoast.showToast(msg: "Payment Failed");
+                  //       }
+                  //       else{
+                  //
+                  //         Fluttertoast.showToast(msg: "Payment Failed");
+                  //       }
+                  //     }, items[0].remainingAmount.toString());
+                  //    upiPayment.initPayment();
+                  // razorpayPayment(items[0].remainingAmount.toString(),);
+                  // // ye bala uncomment karna hai===========================
 
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (ctx) => AlertDialog(
-                      //     title: Text("Pay Remaining Amount"),
-                      //     content: Text(""),
-                      //     actions: <Widget>[
-                      //       TextButton(
-                      //         onPressed: () {
-                      //          Navigator.pop(context);
-                      //         },
-                      //         child: Container(
-                      //
-                      //           decoration: BoxDecoration(
-                      //               color: colors.secondary,
-                      //             borderRadius: BorderRadius.circular(10)
-                      //           ),
-                      //
-                      //           child:Center(child: Text("Back")),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // );
+
                     },
                     child: Container(
                       width: 80,
@@ -11586,10 +11548,9 @@ class _HomePageState extends State<HomePage>
     }
   }
   int _value = 0;
-  bool isMobile = false;
-  bool isSendOtp = false;
+  bool isAmount = false;
+  bool isC = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController amtC =  TextEditingController();
   showDialogBox(){
     return showDialog(
       context: context,
@@ -11619,7 +11580,8 @@ class _HomePageState extends State<HomePage>
                             onChanged: (int? value) {
                               setState(() {
                                 _value = value!;
-                                isMobile = false;
+                                isAmount = false;
+                                print('_____isAmount_____${_value}_________');
                               });
                             },
                           ),
@@ -11642,24 +11604,27 @@ class _HomePageState extends State<HomePage>
                               onChanged: (int? value) {
                                 setState(() {
                                   _value = value!;
-                                  isMobile = true;
+                                  isC = true;
                                 });
-                              }),
+                                print('_____isC_____${amtC.text}_________');
+                              },
+
+                          ),
                           Container(
                             height: 50,
                             width:200,
                             child: TextFormField(
+                                      controller: amtC,
                                      decoration: InputDecoration(
                                      contentPadding: EdgeInsets.only(top: 5,left: 5  ),
                                 border:OutlineInputBorder(),
                                     hintText: "Amount"
                                 ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Amount';
-                                }
-                                return null;
+                              onChanged: (value){
+                                        // print('__________${amtC.text}_________');
+                                // print('__________${value}_________');
                               },
+
                             ),
                           ),
                         ],
@@ -11667,11 +11632,35 @@ class _HomePageState extends State<HomePage>
                       SizedBox(height: 10,),
                       InkWell(
                         onTap: (){
+                          print("this is aaaa====${items[0].remainingAmount}rrrrrr   ${upi}sdsdsd  ${upi}");
+                          print('____amtC.text___ffffff___${amtC.text}_________');
+                          // UpiPayment upiPayment =  UpiPayment( amtC.text ,  "${upi}", context, (value) {
+                          UpiPayment upiPayment =  UpiPayment( _value == 2 ? amtC.text : "${items[0].remainingAmount}", "$upi", context, (value) {
+
+                            if(value.status==UpiTransactionStatus.success){
+                              Navigator.pop(context);
+                              addMony("transID");
+                            } else if(value.status==UpiTransactionStatus.failure){
+
+                              Fluttertoast.showToast(msg: "Payment Failed");
+                            }
+                            else if(value.status == UpiTransactionStatus.failedToLaunch){
+
+                              Fluttertoast.showToast(msg: "Payment Failed");
+                            }
+                            else{
+
+                              Fluttertoast.showToast(msg: "Payment Failed");
+                            }
+                          },
+                              items[0].remainingAmount.toString(),isFromHome: true);
+                          upiPayment.initPayment();
+                          // razorpayPayment(items[0].remainingAmount.toString(),);
                           if(_formKey.currentState!.validate()){
-                            Fluttertoast.showToast(msg: "Enter Amount");
+
                           }
                           else{
-
+                            // Fluttertoast.showToast(msg: "Enter Amount");
                           }
                         },
                         child: Container(
@@ -11710,86 +11699,86 @@ class _HomePageState extends State<HomePage>
       },
     );
   }
-   _showBottomSheet(BuildContext context) {
-
-     showModalBottomSheet(
-       context: context,
-       builder: (BuildContext context) {
-         return Container(
-           padding: EdgeInsets.all(16),
-           child: Column(
-             mainAxisSize: MainAxisSize.min,
-             crossAxisAlignment: CrossAxisAlignment.stretch,
-             children: [
-               Text(
-                 'This is a Modal Bottom Sheet',
-                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                 textAlign: TextAlign.center,
-               ),
-               SizedBox(height: 16),
-               Column(
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   Row(
-                       children: [
-                         Radio(
-                           value: 1,
-                           fillColor: MaterialStateColor.resolveWith(
-                                   (states) =>  colors.secondary),
-                           activeColor:  colors.secondary,
-                           groupValue: _value,
-                           onChanged: (int? value) {
-                             setState(() {
-                               _value = value!;
-                               isMobile = false;
-                             });
-                           },
-                         ),
-                         Text(
-                           "BALANCE : $CUR_CURRENCY ${items[0].remainingAmount}",
-                           style: TextStyle(
-                               color: colors.secondary, fontSize: 21),
-                         ),
-                       ],
-                   ),
-                   SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Radio(
-                          value: 2,
-                          fillColor: MaterialStateColor.resolveWith(
-                                  (states) => colors.secondary),
-                          activeColor:   colors.secondary,
-                          groupValue: _value,
-                          onChanged: (int? value) {
-                            setState(() {
-                              _value = value!;
-                              isMobile = true;
-                            });
-                          }),
-                       Container(
-                         height: 50,
-                         width: 250,
-                         child: TextField(
-                           decoration: InputDecoration(
-
-                             hintText: "Amount"
-                           )
-                           ),
-                       ),
-                    ],
-                  ),
-                   
-                 ],
-               ),
-              
-             ],
-           ),
-         );
-       },
-     );
-   }
+   // _showBottomSheet(BuildContext context) {
+   //
+   //   showModalBottomSheet(
+   //     context: context,
+   //     builder: (BuildContext context) {
+   //       return Container(
+   //         padding: EdgeInsets.all(16),
+   //         child: Column(
+   //           mainAxisSize: MainAxisSize.min,
+   //           crossAxisAlignment: CrossAxisAlignment.stretch,
+   //           children: [
+   //             Text(
+   //               'This is a Modal Bottom Sheet',
+   //               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+   //               textAlign: TextAlign.center,
+   //             ),
+   //             SizedBox(height: 16),
+   //             Column(
+   //               crossAxisAlignment: CrossAxisAlignment.center,
+   //               mainAxisAlignment: MainAxisAlignment.center,
+   //               children: [
+   //                 Row(
+   //                     children: [
+   //                       Radio(
+   //                         value: 1,
+   //                         fillColor: MaterialStateColor.resolveWith(
+   //                                 (states) =>  colors.secondary),
+   //                         activeColor:  colors.secondary,
+   //                         groupValue: _value,
+   //                         onChanged: (int? value) {
+   //                           setState(() {
+   //                             _value = value!;
+   //                             isMobile = false;
+   //                           });
+   //                         },
+   //                       ),
+   //                       Text(
+   //                         "BALANCE : $CUR_CURRENCY ${items[0].remainingAmount}",
+   //                         style: TextStyle(
+   //                             color: colors.secondary, fontSize: 21),
+   //                       ),
+   //                     ],
+   //                 ),
+   //                 SizedBox(height: 10,),
+   //                Row(
+   //                  children: [
+   //                    Radio(
+   //                        value: 2,
+   //                        fillColor: MaterialStateColor.resolveWith(
+   //                                (states) => colors.secondary),
+   //                        activeColor:   colors.secondary,
+   //                        groupValue: _value,
+   //                        onChanged: (int? value) {
+   //                          setState(() {
+   //                            _value = value!;
+   //                            isMobile = true;
+   //                          });
+   //                        }),
+   //                     Container(
+   //                       height: 50,
+   //                       width: 250,
+   //                       child: TextField(
+   //                         decoration: InputDecoration(
+   //
+   //                           hintText: "Amount"
+   //                         )
+   //                         ),
+   //                     ),
+   //                  ],
+   //                ),
+   //
+   //               ],
+   //             ),
+   //
+   //           ],
+   //         ),
+   //       );
+   //     },
+   //   );
+   // }
   _singleSection(int index) {
     Color back;
     int pos = index % 5;
@@ -14318,6 +14307,7 @@ class _HomePageState extends State<HomePage>
   }
 
   doPayment() {
+    print('____remainingAmount______${remainingAmount}_________');
     print("this is upi ID ${upi.toString()}");
     print("pay method here" + payMethod.toString());
     if (payMethod == getTranslated(context, 'PAYPAL_LBL')) {

@@ -11,7 +11,8 @@ class UpiPayment{
   BuildContext context;
   ValueChanged onResult;
   List<ApplicationMeta>? _apps;
-  UpiPayment(this.amount,this.upi, this.context, this.onResult,this.advance);
+  bool? isFromHome;
+  UpiPayment(this.amount,this.upi, this.context, this.onResult,this.advance, {this.isFromHome});
 
   void initPayment()async{
     _apps = await UpiPay.getInstalledUpiApplications(
@@ -78,14 +79,11 @@ class UpiPayment{
     );
   }
   Future<void> onTap(ApplicationMeta app) async {
-    print("this is advance amount ${advance.toString()}");
-    print("this is upi ${upi.toString()}");
-
     final transactionRef = Random.secure().nextInt(1 << 32).toString();
     print("Starting transaction with id $transactionRef");
     print("last check here ${advance} and ${app.upiApplication} and ${upi}");
     UpiTransactionResponse response = await UpiPay.initiateTransaction(
-      amount: "${advance}",
+      amount: isFromHome ?? false  ? amount : advance,
       app: app.upiApplication,
       receiverName: 'Feedmart payment',
       receiverUpiAddress: "${upi}",
