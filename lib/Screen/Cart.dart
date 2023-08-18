@@ -4724,10 +4724,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                           print("checking address result here ${result.name} and ${result.addItem!.address} ");
                           checkoutState!(() {
                             deliverable = false;
-                          });
-                          setState(() {
                             radioData = result;
                           });
+                          // setState(() {
+                          //   radioData = result;
+                          // });
                         },
                       ),
                     ],
