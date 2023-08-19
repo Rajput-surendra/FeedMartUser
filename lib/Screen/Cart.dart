@@ -403,7 +403,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     if (cartList[index].productList![0].availability == "0") {
       isAvailable = false;
     }
-    print("this is a unittext============${cartList[index].productList![0].unittext}");
+    print("this is a unittext============${cartList[index].productList![0].prVarientList![0].unittext}");
     return  Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 20.0,
@@ -621,7 +621,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                               cartList[index]
                                                   .productList![0]
                                                   .prVarientList![selectedPos]
-                                                  .disPrice! + "/" + " ${cartList[index].productList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![0].unittext:cartList[index].productList![0].weight }"
+                                                  .disPrice! + "/" + " "
+                                                 "${cartList[index].productList![0].prVarientList![0].unittext}"
+                                               // "${cartList[index].productList![0].prVarientList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![0].unittext:cartList[index].productList![0].prVarientList![0].weight }"
 
                                               : "",
                                           style: TextStyle(
@@ -1504,7 +1506,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                         cartList[index]
                                             .productList![0]
                                             .prVarientList![selectedPos]
-                                            .disPrice! + "/" + " ${cartList[index].productList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![0].unittext:cartList[index].productList![0].weight }"
+                                            .disPrice! + "/" + " " "${cartList[index].productList![0].prVarientList![0].unittext}"
+                                        // "${cartList[index].productList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![index].unittext:cartList[index].productList![0].weight }"
                                         : "",
                                     style: TextStyle(
                                       color: colors.blackTemp,
@@ -4724,11 +4727,14 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                           print("checking address result here ${result.name} and ${result.addItem!.address} ");
                           checkoutState!(() {
                             deliverable = false;
-                            radioData = result;
+                           // radioData = result;
+                            _getCart('0');
                           });
-                          // setState(() {
-                          //   radioData = result;
-                          // });
+                          setState(() {
+                            _getCart('0');
+                            radioData = result;
+                            print('_____result_____${result}_________');
+                          });
                         },
                       ),
                     ],
