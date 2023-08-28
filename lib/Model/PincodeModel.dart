@@ -53,7 +53,7 @@ class Data {
 }
 
   Data.fromJson(dynamic json) {
-    _lat = json['lat'];
+    _lat = json ['lat'];
     _lng = json['lng'];
   }
   double? _lat;

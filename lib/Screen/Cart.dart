@@ -3519,6 +3519,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
+  //  checkoutState !=null ? checkoutState!((){}) : null;
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -4725,16 +4726,15 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                         home: false,
                                       )));
                           print("checking address result here ${result.name} and ${result.addItem!.address} ");
+
+                            //_getCart('0');
+                            radioData = result;
                           checkoutState!(() {
                             deliverable = false;
-                           // radioData = result;
-                            _getCart('0');
+                            // radioData = result;
+                            //_getCart('0');
                           });
-                          setState(() {
-                            _getCart('0');
-                            radioData = result;
-                            print('_____result_____${result}_________');
-                          });
+
                         },
                       ),
                     ],

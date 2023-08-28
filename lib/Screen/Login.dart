@@ -538,7 +538,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
           Text(getTranslated(context, 'DONT_HAVE_AN_ACC')!,
               style: Theme.of(context).textTheme.caption!.copyWith(
                   color: Theme.of(context).colorScheme.fontColor,
-                  fontWeight: FontWeight.normal)),
+                  fontWeight: FontWeight.bold)),
           InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -555,7 +555,9 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
                     color: colors.secondary,
                     // Theme.of(context).colorScheme.fontColor,
                     decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.normal),
+                    fontWeight: FontWeight.bold
+
+                ),
               ))
         ],
       ),
