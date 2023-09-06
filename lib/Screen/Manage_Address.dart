@@ -565,7 +565,7 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
         print('____dCharge______${dCharge}_________');
         print(" this is promocid========>${promoAmt.toString()}");
       });
-      Navigator.pop(context,addModel[index]);
+      Navigator.pop(context, addModel[index]);
 
     }
     else {

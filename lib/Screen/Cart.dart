@@ -4724,11 +4724,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                         onTap: () async {
                           final RadioModel result =  await Navigator.push(
                               context, MaterialPageRoute(builder: (BuildContext context) => ManageAddress(home: false,)));
-                          print("checking address result here ${result.name} and ${result.addItem!.address} ");
+                          print("checking address result here ${result.name} and ${result.addItem!.address} ${result.addItem!.id} ");
                           //_getCart('0');
                           radioData = result;
-
-                          await addDeliveryCharge(addressList[selectedAddress!].id.toString());
+                          await addDeliveryCharge(result.addItem!.id.toString());
+                          // await addDeliveryCharge(addressList[selectedAddress!].id.toString());
                           checkoutState!(() {
                             deliverable = false;
                             // radioData = result;
