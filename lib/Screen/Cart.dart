@@ -78,6 +78,12 @@ String? razorpayId,
     paytmMerKey;
 bool payTesting = true;
 
+var dCharge;
+String? overallAmount;
+String? finalAmount;
+var finalValues;
+
+
 /*String gpayEnv = "TEST",
     gpayCcode = "US",
     gpaycur = "USD",
@@ -125,7 +131,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
   String? finalDeliveryCharge = "0";
 
-  var finalValues;
 
   addDeliveryCharge(String addId)async{
     var headers = {
@@ -138,7 +143,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       'weight': ''
     });
     print("paras ${request.fields}");
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaa${baseUrl}");
+    print("aaaaaaaaa${baseUrl}");
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -153,15 +158,16 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         print('____dCharge______${dCharge}_________');
         print(" this is promocid========>${promoAmt.toString()}");
       });
+
+
     }
     else {
       print(response.reasonPhrase);
     }
-
   }
 
 
-  removeCart(String vid)async{
+  removeCart(String vid) async {
     var headers = {
       'Cookie': 'ci_session=2e34d4565ccb1c5601c92bf72c678519478d7275'
     };
@@ -175,7 +181,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-
       var finalResult = await response.stream.bytesToString();
       final jsonRessult  = json.decode(finalResult);
       Fluttertoast.showToast(msg: "${jsonRessult['message']}");
@@ -220,7 +225,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         _isCartLoad = true;
       });
     clearAll();
-
     _getCart("0");
     return _getSaveLater("1");
   }
@@ -228,7 +232,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   clearAll() {
     totalPrice = 0;
     oriPrice = 0;
-
     taxPer = 0;
     delCharge = 0;
     addressList.clear();
@@ -622,8 +625,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                   .productList![0]
                                                   .prVarientList![selectedPos]
                                                   .disPrice! + "/" + " "
-                                                 "${cartList[index].productList![0].prVarientList![0].unittext}"
-                                               // "${cartList[index].productList![0].prVarientList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![0].unittext:cartList[index].productList![0].prVarientList![0].weight }"
+                                              "${cartList[index].productList![0].prVarientList![0].unittext}"
+                                          // "${cartList[index].productList![0].prVarientList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![0].unittext:cartList[index].productList![0].prVarientList![0].weight }"
 
                                               : "",
                                           style: TextStyle(
@@ -1507,7 +1510,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             .productList![0]
                                             .prVarientList![selectedPos]
                                             .disPrice! + "/" + " " "${cartList[index].productList![0].prVarientList![0].unittext}"
-                                        // "${cartList[index].productList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![index].unittext:cartList[index].productList![0].weight }"
+                                    // "${cartList[index].productList![0].weight ==  "1"? cartList[index].productList![0].prVarientList![index].unittext:cartList[index].productList![0].weight }"
                                         : "",
                                     style: TextStyle(
                                       color: colors.blackTemp,
@@ -1999,9 +2002,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           ],
         ));
   }
-  var dCharge;
+  /*var dCharge;
   String? overallAmount;
-  String? finalAmount;
+  String? finalAmount;*/
   /// String? unittext;
   Future<void> _getCart(String save) async {
     _isNetworkAvail = await isNetworkAvailable();
@@ -3519,7 +3522,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
-  //  checkoutState !=null ? checkoutState!((){}) : null;
+    //  checkoutState !=null ? checkoutState!((){}) : null;
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -4657,6 +4660,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   //     ),
   //   );
   // }
+
   address() {
     return Card(
       elevation: 0,
@@ -4719,21 +4723,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                         ),
                         onTap: () async {
                           final RadioModel result =  await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ManageAddress(
-                                        home: false,
-                                      )));
+                              context, MaterialPageRoute(builder: (BuildContext context) => ManageAddress(home: false,)));
                           print("checking address result here ${result.name} and ${result.addItem!.address} ");
+                          //_getCart('0');
+                          radioData = result;
 
-                            //_getCart('0');
-                            radioData = result;
+                          await addDeliveryCharge(addressList[selectedAddress!].id.toString());
                           checkoutState!(() {
                             deliverable = false;
                             // radioData = result;
-                            //_getCart('0');
+                            //
                           });
+                          // addDeliveryCharge(addressList[selectedAddress!].id.toString());
+                          // _getCart('0');
 
                         },
                       ),
@@ -4786,16 +4788,23 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   ),
                 ),
                 onTap: () async {
-                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                  Navigator.push(
+                  // ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => AddAddress(
                           update: false,
                           index: addressList.length,
                         )),
-                  );
-                  if (mounted) setState(() {});
+                  );*/
+                  final RadioModel result = await Navigator.push(context, MaterialPageRoute(builder: (context) => ManageAddress(home: false),));
+                  radioData = result;
+                  checkoutState!(() {
+                    deliverable = false;
+                    // radioData = result;
+                    //
+                  });
+                  //if (mounted) setState(() {});
                 },
               ),
             )
@@ -4913,28 +4922,27 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   }
 
   orderSummary(List<SectionModel> cartList) {
-    print('______surendra ____${finalValues}_________');
     return Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
-        ),
-        elevation: 3,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                getTranslated(context, 'ORDER_SUMMARY')! +
-                    " (" +
-                    cartList.length.toString() +
-                    " items)",
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.fontColor,
-                    fontWeight: FontWeight.bold),
-              ),
-              Divider(),
-              /*  Row(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+      ),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              getTranslated(context, 'ORDER_SUMMARY')! +
+                  " (" +
+                  cartList.length.toString() +
+                  " items)",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.fontColor,
+                  fontWeight: FontWeight.bold),
+            ),
+            Divider(),
+            /*  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -4950,191 +4958,183 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   )
                 ],
               ),*/
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'BALANCE_AMOUNT')!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,fontWeight: FontWeight.normal),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'BALANCE_AMOUNT')!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context).colorScheme.fontColor,fontWeight: FontWeight.normal),
+                ),
+                payMethod == "Cash On Delivery" ? Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      "0.00",
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold),
+                ): Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      finalAmount.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold
                   ),
-                  payMethod == "Cash On Delivery" ?    Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        "0.00",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  ) :   Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        finalAmount.toString(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'DELIVERY_CHARGE')!,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor,fontWeight: FontWeight.normal),
-                  ),
-                  Text( dCharge == null || dCharge == "" ? "0.0":
-                  CUR_CURRENCY! + " " + dCharge,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'TOTAL_AMOUNT')!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,fontWeight: FontWeight.normal),
-                  ),
-                  payMethod == "Cash On Delivery" ?
-                  finalValues == null || finalValues == "" ?Text("0.0")  : Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        "${finalValues}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  ) :
-                  finalValues == null || finalValues == "" ?Text("0.0") :Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        "${finalValues}",
-                    // remainingAmount.toString()
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'DELIVERY_CHARGE')!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor,fontWeight: FontWeight.normal),
+                ),
+                Text(dCharge == null || dCharge == "" ? "0.0":
+                CUR_CURRENCY! + " " + dCharge,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'TOTAL_AMOUNT')!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,fontWeight: FontWeight.normal),
+                ),
+                payMethod == "Cash On Delivery" ?
+                finalValues == null || finalValues == "" ?Text("0.0")  : Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      "${finalValues}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold),
+                ) :
+                finalValues == null || finalValues == "" ?Text("0.0") :Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      "${finalValues}",
+                  // remainingAmount.toString()
 
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'MINIMUM_PAYMENT')!+ " (${advancePercentage}%)",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,fontWeight: FontWeight.normal),
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'MINIMUM_PAYMENT')!+ " (${advancePercentage}%)",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,fontWeight: FontWeight.normal),
+                ),
 
-                  payMethod == "Cash On Delivery" ?    Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        "0.00",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  ) : Text(
-                    CUR_CURRENCY! +
-                        " " +
-                        "${advanceAmount.toString()}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-
-
-              isPromoValid!
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'PROMO_CODE_DIS_LBL')!,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor),
-                  ),
-                  Text(
-                    CUR_CURRENCY! + " " + promoAmt.toStringAsFixed(2),
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-                  : Container(),
-              isUseWallet!
-                  ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getTranslated(context, 'WALLET_BAL')!,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.lightBlack2),
-                  ),
-                  Text(
-                    CUR_CURRENCY! + " " + usedBal.toStringAsFixed(2),
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-                  : Container(),
-            ],
-          ),
-        ));
+                payMethod == "Cash On Delivery" ? Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      "0.00",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold),
+                ) : Text(
+                  CUR_CURRENCY! +
+                      " " +
+                      "${advanceAmount.toString()}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .fontColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            isPromoValid! ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'PROMO_CODE_DIS_LBL')!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor),
+                ),
+                Text(
+                  CUR_CURRENCY! + " " + promoAmt.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ): Container(),
+            isUseWallet!
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'WALLET_BAL')!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.lightBlack2),
+                ),
+                Text(
+                  CUR_CURRENCY! + " " + usedBal.toStringAsFixed(2),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ): Container(),
+          ],
+        ),
+      ),
+    );
   }
 
   // Future<void> validatePromo(bool check) async {

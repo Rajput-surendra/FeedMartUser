@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 import '../Helper/AppBtn.dart';
 import '../Helper/Color.dart';
@@ -10,9 +11,12 @@ import '../Helper/Constant.dart';
 import '../Helper/user_custom_radio.dart';
 import '../Helper/Session.dart';
 import '../Helper/String.dart';
+import '../Model/Section_Model.dart';
 import '../Model/User.dart';
+import '../Provider/CartProvider.dart';
 import 'Add_Address.dart';
 import 'Cart.dart';
+import 'package:http/http.dart' as http;
 
 class ManageAddress extends StatefulWidget {
   final bool? home;
@@ -32,7 +36,7 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
   bool _isNetworkAvail = true;
   List<RadioModel> addModel = [];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -119,9 +123,9 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
         print(parameter.toString());
         print("get address ${getAddAddressApi}");
         Response response =
-            await post(getAddressApi, body: parameter, headers: headers)
-                .timeout(Duration(seconds: timeOut));
-                print(getAddressApi.toString());
+        await post(getAddressApi, body: parameter, headers: headers)
+            .timeout(Duration(seconds: timeOut));
+        print(getAddressApi.toString());
         print(parameter.toString());
 
         var getdata = json.decode(response.body);
@@ -178,16 +182,16 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
     return Scaffold(
       key: _scaffoldKey,
       appBar:
-          getSimpleAppBar(getTranslated(context, "SHIPP_ADDRESS")!, context),
+      getSimpleAppBar(getTranslated(context, "SHIPP_ADDRESS")!, context),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => AddAddress(
-                      update: false,
-                      index: addressList.length,
-                    )),
+                  update: false,
+                  index: addressList.length,
+                )),
           );
           if (mounted) {
             setState(() {
@@ -201,74 +205,74 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
       backgroundColor: Theme.of(context).colorScheme.lightWhite,
       body: _isNetworkAvail
           ? Column(
-              children: [
-                Expanded(
-                  child: _isLoading
-                      ? shimmer(context)
-                      : addressList.isEmpty
-                          ? Center(
-                              child: Text(
-                                getTranslated(context, 'NOADDRESS')!,
-                              ),
-                            )
-                          : Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: RefreshIndicator(
-                                       color: colors.primary,
-                                    key: _refreshIndicatorKey,
-                                    onRefresh: _refresh,
-                                    child: ListView.builder(
-                                      // shrinkWrap: true,
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      itemCount: addressList.length,
-                                      itemBuilder: (context, index) {
-                                        return addressItem(index);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                showCircularProgress(
-                                    _isProgress, colors.primary),
-                              ],
-                            ),
-                ),
-                // InkWell(
-                //   child: Container(
-                //       alignment: Alignment.center,
-                //       height: 55,
-                //       decoration:  const BoxDecoration(
-                //         gradient: LinearGradient(
-                //             begin: Alignment.topLeft,
-                //             end: Alignment.bottomRight,
-                //             colors: [colors.grad1Color, colors.grad2Color],
-                //             stops: [0, 1]),
-                //       ),
-                //       child: Text(getTranslated(context, 'ADDADDRESS')!,
-                //           style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                //                 color: Theme.of(context).colorScheme.white,
-                //               ))),
-                //   onTap: () async {
-                //     await Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => AddAddress(
-                //                 update: false,
-                //                 index: addressList.length,
-                //               )),
-                //     );
-                //     if (mounted) {
-                //       setState(() {
-                //         addModel.clear();
-                //         addAddressModel();
-                //       });
-                //     }
-                //   },
-                // )
-              ],
+        children: [
+          Expanded(
+            child: _isLoading
+                ? shimmer(context)
+                : addressList.isEmpty
+                ? Center(
+              child: Text(
+                getTranslated(context, 'NOADDRESS')!,
+              ),
             )
+                : Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: RefreshIndicator(
+                    color: colors.primary,
+                    key: _refreshIndicatorKey,
+                    onRefresh: _refresh,
+                    child: ListView.builder(
+                      // shrinkWrap: true,
+                      physics:
+                      const AlwaysScrollableScrollPhysics(),
+                      itemCount: addressList.length,
+                      itemBuilder: (context, index) {
+                        return addressItem(index);
+                      },
+                    ),
+                  ),
+                ),
+                showCircularProgress(
+                    _isProgress, colors.primary),
+              ],
+            ),
+          ),
+          // InkWell(
+          //   child: Container(
+          //       alignment: Alignment.center,
+          //       height: 55,
+          //       decoration:  const BoxDecoration(
+          //         gradient: LinearGradient(
+          //             begin: Alignment.topLeft,
+          //             end: Alignment.bottomRight,
+          //             colors: [colors.grad1Color, colors.grad2Color],
+          //             stops: [0, 1]),
+          //       ),
+          //       child: Text(getTranslated(context, 'ADDADDRESS')!,
+          //           style: Theme.of(context).textTheme.subtitle1!.copyWith(
+          //                 color: Theme.of(context).colorScheme.white,
+          //               ))),
+          //   onTap: () async {
+          //     await Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => AddAddress(
+          //                 update: false,
+          //                 index: addressList.length,
+          //               )),
+          //     );
+          //     if (mounted) {
+          //       setState(() {
+          //         addModel.clear();
+          //         addAddressModel();
+          //       });
+          //     }
+          //   },
+          // )
+        ],
+      )
           : noInternet(context),
     );
   }
@@ -282,8 +286,8 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
       };
 
       Response response =
-          await post(updateAddressApi, body: data, headers: headers)
-              .timeout(Duration(seconds: timeOut));
+      await post(updateAddressApi, body: data, headers: headers)
+          .timeout(Duration(seconds: timeOut));
 
       var getdata = json.decode(response.body);
 
@@ -364,8 +368,11 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
       elevation:2,
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
-        onTap: () {
-          Navigator.pop(context,addModel[index]);
+        onTap: () async{
+            print('_____surendra_____${addressList[selectedAddress!].id.toString()}_________');
+          await addDeliveryCharge(addressList[selectedAddress!].id.toString(),index);
+
+
           // if (mounted) {
           //   setState(() {
           //     if (!ISFLAT_DEL) {
@@ -410,8 +417,8 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
           ID: addressList[index].id,
         };
         Response response =
-            await post(deleteAddressApi, body: parameter, headers: headers)
-                .timeout(Duration(seconds: timeOut));
+        await post(deleteAddressApi, body: parameter, headers: headers)
+            .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
         bool error = getdata["error"];
@@ -478,9 +485,9 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
           isSelected: i == selectedAddress ? true : false,
           name: "${addressList[i].name!}, ${addressList[i].mobile!}",
           add:
-              "${addressList[i].address!},"
-                  // " ${addressList[i].area!},"
-                  " ${addressList[i].city!}, ${addressList[i].state!}, ${addressList[i].country!}, ${addressList[i].pincode!}",
+          "${addressList[i].address!},"
+          // " ${addressList[i].area!},"
+              " ${addressList[i].city!}, ${addressList[i].state!}, ${addressList[i].country!}, ${addressList[i].pincode!}",
           addItem: addressList[i],
           show: !widget.home!,
           onSetDefault: () {
@@ -509,7 +516,6 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
                 ),
               ),
             );
-
             if (mounted) {
               setState(() {
                 addModel.clear();
@@ -530,5 +536,40 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
       backgroundColor: Theme.of(context).colorScheme.white,
       elevation: 1.0,
     ));
+  }
+
+  addDeliveryCharge(String addId, int index)async{
+    var headers = {
+      'Cookie': 'ci_session=28b4afd1b1444d58aedc2e9270429038a57c62d2'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}get_delivery_charge'));
+    request.fields.addAll({
+      'address_id': '${addId}',
+      'user_id': '${CUR_USERID}',
+      'weight': ''
+    });
+    print("paras ${request.fields}");
+    print("aaaaaaaaa${baseUrl}");
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var finalResult = await response.stream.bytesToString();
+      final jsonResponse = json.decode(finalResult);
+      print("checking delivery Charge message ${jsonResponse}");
+      print("checking charge price here ${jsonResponse['data'][0]['delivery_charge']}");
+      setState(() {
+        dCharge = jsonResponse['data'][0]['delivery_charge'];
+        print('${finalAmount.toString()}__________final');
+        finalValues = ( double.parse(finalAmount.toString()) + double.parse(dCharge.toString())) - (promoAmt);
+        print("final value here is now ${finalAmount}");
+        print('____dCharge______${dCharge}_________');
+        print(" this is promocid========>${promoAmt.toString()}");
+      });
+      Navigator.pop(context,addModel[index]);
+
+    }
+    else {
+      print(response.reasonPhrase);
+    }
   }
 }

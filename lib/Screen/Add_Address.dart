@@ -172,7 +172,6 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
       } else {
         selectedType = 3;
       }
-
       checkedDefault = item.isDefault == "1" ? true : false;
     } else {
       //getCurrentLoc();
@@ -240,7 +239,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-     //  checkPinCode();
+      //  checkPinCode();
       await checkNetwork();
     }
   }
@@ -259,12 +258,12 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
       //   if (latitude == null || longitude == null) {
       //   setSnackbar(getTranslated(context, 'locationWarning')!);
       // } else {
-         return true;
+      return true;
       // }
     }
     return false;
   }
-    String? lat, long;
+  String? lat, long;
   checkPinCode()async{
     var headers = {
       'Cookie': 'ci_session=3d38f29c3d3471b980a5a47c7c30aaf9dd943c4f'
@@ -502,7 +501,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                           .textTheme
                           .subtitle1!
                           .copyWith(
-                              color: Theme.of(context).colorScheme.fontColor),
+                          color: Theme.of(context).colorScheme.fontColor),
                     ),
                   ),
                   TextField(
@@ -514,7 +513,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
                       prefixIcon:
-                          Icon(Icons.search, color: colors.primary, size: 17),
+                      Icon(Icons.search, color: colors.primary, size: 17),
                       hintText: getTranslated(context, 'SEARCH_LBL'),
                       hintStyle: TextStyle(
                         color: colors.primary.withOpacity(0.5),
@@ -533,25 +532,24 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                   Divider(color: Theme.of(context).colorScheme.lightBlack),
                   areaLoading
                       ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50.0),
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                       : (areaSearchList.length > 0)
-                          ? Flexible(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: getAreaList()),
-                              ),
-                            )
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
-                              child: getNoItem(context),
-                            )
+                      ? Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: getAreaList()),
+                    ),
+                  )
+                      : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: getNoItem(context),
+                  )
                 ],
               ),
             );
@@ -583,11 +581,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                     padding: EdgeInsets.fromLTRB(20.0, 20.0, 0, 0),
                     child: Text(
                       getTranslated(context, 'CITYSELECT_LBL')!,
-                      style: Theme.of(this.context)
-                          .textTheme
-                          .subtitle1!
-                          .copyWith(
-                              color: Theme.of(context).colorScheme.fontColor),
+                      style: Theme.of(this.context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.fontColor),
                     ),
                   ),
                   TextField(
@@ -599,17 +593,14 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
                       prefixIcon:
-                          Icon(Icons.search, color: colors.primary, size: 17),
+                      Icon(Icons.search, color: colors.primary, size: 17),
                       hintText: getTranslated(context, 'SEARCH_LBL'),
-                      hintStyle:
-                          TextStyle(color: colors.primary.withOpacity(0.5)),
+                      hintStyle: TextStyle(color: colors.primary.withOpacity(0.5)),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.white),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.white),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.white),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.white),
                       ),
                     ),
                     // onChanged: (query) => updateSearchQuery(query),
@@ -617,25 +608,23 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                   Divider(color: Theme.of(context).colorScheme.lightBlack),
                   cityLoading
                       ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50.0),
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 50.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                       : (citySearchLIst.length > 0)
-                          ? Flexible(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: setCities(),
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
-                              child: getNoItem(context),
-                            )
+                      ? Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: setCities(),
+                      ),
+                    ),
+                  )
+                      : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: getNoItem(context)),
                 ],
               ),
             );
@@ -650,36 +639,36 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
         .asMap()
         .map(
           (index, element) => MapEntry(
-            index,
-            InkWell(
-              onTap: () {
-                if (mounted) {
-                  setState(
+        index,
+        InkWell(
+          onTap: () {
+            if (mounted) {
+              setState(
                     () {
-                      //selectedDelBoy = index;
-                      selAreaPos = index;
-                      Navigator.of(context).pop();
+                  //selectedDelBoy = index;
+                  selAreaPos = index;
+                  Navigator.of(context).pop();
 
-                      selArea = areaSearchList[selAreaPos!];
-                      area = selArea!.id;
-                      pincodeC!.text = selArea!.pincode!;
-                    },
-                  );
-                }
-              },
-              child: Container(
-                width: double.maxFinite,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    areaSearchList[index].name!,
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                ),
+                  selArea = areaSearchList[selAreaPos!];
+                  area = selArea!.id;
+                  pincodeC!.text = selArea!.pincode!;
+                },
+              );
+            }
+          },
+          child: Container(
+            width: double.maxFinite,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                areaSearchList[index].name!,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
             ),
           ),
-        )
+        ),
+      ),
+    )
         .values
         .toList();
   }
@@ -818,8 +807,8 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                                 style: TextStyle(
                                     color: selAreaPos != null
                                         ? Theme.of(context)
-                                            .colorScheme
-                                            .fontColor
+                                        .colorScheme
+                                        .fontColor
                                         : Colors.grey)),
                           ],
                         ),
@@ -969,7 +958,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
               },
               // validator: (val) => validatePincode(val, getTranslated(context, 'PIN_REQUIRED')),
               decoration: InputDecoration(
-                counterText: "",
+                  counterText: "",
                   label: Text(getTranslated(context, "PINCODEHINT_LBL")!),
                   fillColor: Theme.of(context).colorScheme.white,
                   isDense: true,
@@ -1038,8 +1027,8 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
       };
 
       Response response =
-          await post(getAreaByCityApi, body: data, headers: headers)
-              .timeout(Duration(seconds: timeOut));
+      await post(getAreaByCityApi, body: data, headers: headers)
+          .timeout(Duration(seconds: timeOut));
 
       var getdata = json.decode(response.body);
 
@@ -1203,10 +1192,10 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
               setState((){
                 selectedStates = newValue as String?;
                 print("selected address ${selectedStates}");
-               // prefs!.setString('stateId', '${selectedState}');
+                // prefs!.setString('stateId', '${selectedState}');
                 Navigator.of(context);
-               // callApi();
-               //  Navigator.of(context);
+                // callApi();
+                //  Navigator.of(context);
               });
             }),
       ),
@@ -1307,13 +1296,13 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
       print(widget.update.toString());
 
       Response response = await post(
-              widget.update! ? updateAddressApi : getAddAddressApi,
-              body: data,
-              headers: headers)
+          widget.update! ? updateAddressApi : getAddAddressApi,
+          body: data,
+          headers: headers)
 
 
           .timeout(Duration(seconds: timeOut));
-         print("111111111111111111111111111${getAddAddressApi.toString()}");
+      print("111111111111111111111111111${getAddAddressApi.toString()}");
       print("get Api ----------->: $widget.update");
 
 
@@ -1324,7 +1313,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
         String? msg = getdata["message"];
         addDeliveryCharge(getdata['data'][0]['id'].toString());
         await buttonController!.reverse();
-         print("add id here ${getdata['data'][0]['id']}");
+        print("add id here ${getdata['data'][0]['id']}");
         if (!error) {
           var data = getdata["data"];
           if (widget.update!){
@@ -1333,18 +1322,18 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
               for (User i in addressList) {
                 i.isDefault = "0";
               }
-             // print("address id here ${getdata['data']['id']}");
-             // addDeliveryCharge(getdata['data']['id']);
+              // print("address id here ${getdata['data']['id']}");
+              // addDeliveryCharge(getdata['data']['id']);
               addressList[widget.index!].isDefault = "1";
 
               if (!ISFLAT_DEL) {
-               // if (oriPrice <
-                  //  double.parse(addressList[selectedAddress!].freeAmt.toString())) {
-                  // delCharge = double.parse(
-                  //     addressList[selectedAddress!].deliveryCharge!);
+                // if (oriPrice <
+                //  double.parse(addressList[selectedAddress!].freeAmt.toString())) {
+                // delCharge = double.parse(
+                //     addressList[selectedAddress!].deliveryCharge!);
                 //} else {
-                  delCharge = 0;
-               // }
+                delCharge = 0;
+                // }
                 totalPrice = totalPrice - delCharge;
               }
 
@@ -1598,7 +1587,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                           setAltMobileNo(),
                           setAddress(),
                           setLandmark(),
-                           setCities(),
+                          setCities(),
                           // setArea(),
                           setPincode(),
                           setStateField(),
@@ -1674,51 +1663,51 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
 
   Widget saveButton(String title, VoidCallback? onBtnSelected) {
     return
-    //   Row(
-    //   children: [
-    //     Expanded(
-    //       child: Padding(
-    //         padding:
-    //         const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-    //         child: MaterialButton(
-    //           height: 45.0,
-    //           textColor: Theme.of(context).colorScheme.white,
-    //           shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(10.0)),
-    //           onPressed: onBtnSelected,
-    //           child: Text(title),
-    //           color: colors.secondary,
-    //         ),
-    //       ),
-    //     ),
-    //   ],
-    // );
+      //   Row(
+      //   children: [
+      //     Expanded(
+      //       child: Padding(
+      //         padding:
+      //         const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+      //         child: MaterialButton(
+      //           height: 45.0,
+      //           textColor: Theme.of(context).colorScheme.white,
+      //           shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(10.0)),
+      //           onPressed: onBtnSelected,
+      //           child: Text(title),
+      //           color: colors.secondary,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // );
 
       InkWell(
-      onTap: (){
-        onBtnSelected!();
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(left: 18,right: 18),
-        child: Container(
-            width: double.infinity,
-            height: 45,
-            alignment: FractionalOffset.center,
-            decoration: new BoxDecoration(
-              color: colors.secondary,
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [colors.secondary, colors.button],
-                  stops: [0, 1]),
-              borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
-            ),
-            child: Text("Save",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    color: colors.whiteTemp, fontWeight: FontWeight.bold))),
-      ),
-    );
+        onTap: (){
+          onBtnSelected!();
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18,right: 18),
+          child: Container(
+              width: double.infinity,
+              height: 45,
+              alignment: FractionalOffset.center,
+              decoration: new BoxDecoration(
+                color: colors.secondary,
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [colors.secondary, colors.button],
+                    stops: [0, 1]),
+                borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
+              ),
+              child: Text("Save",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: colors.whiteTemp, fontWeight: FontWeight.bold))),
+        ),
+      );
 
 
   }
