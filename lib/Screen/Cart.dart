@@ -154,7 +154,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       setState(() {
         dCharge = jsonResponse['data'][0]['delivery_charge'];
         finalValues = ( double.parse(finalAmount.toString()) + double.parse(dCharge.toString())) - (promoAmt);
-        print("final value here is now ${finalAmount}");
+        advanceAmount = (finalValues * double.parse(advancePercentage.toString()) /100).toString();
+        amount = double.parse(advanceAmount.toString()) ;
+        print("final value here is now ${finalAmount} ${amount}");
         print('____dCharge______${dCharge}_________');
         print(" this is promocid========>${promoAmt.toString()}");
       });
@@ -2054,7 +2056,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             //unittext = getdata["unit_text"];
             // print("advancePercentage================> : $unittext");
             print("advancePercentage================> : $advancePercentage");
-            print("Cart aMOUBT================> : $totalamount");
+            print("Cart aMOUBT================> : $advanceAmount");
             amount = double.parse(advanceAmount.toString()) ;
             //sellerId = data[0]["product_details"][0]["seller_id"];
             print("checking razor pay amount ${amount}");
@@ -3412,7 +3414,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 size: 0.9,
                 title: getTranslated(context, 'PROCEED_CHECKOUT'),
                 onBtnSelected: () async {
-                  addressList.isEmpty ? null :  print("iiiiiii ${addressList[selectedAddress!].id}");
+                  addressList.isEmpty ? null : print("iiiiiii ${addressList[selectedAddress!].id}");
                   addressList.isEmpty ? null : await addDeliveryCharge(addressList[selectedAddress!].id.toString());
                   checkout(cartList);
                   // if(isOnOff == true){
@@ -3603,7 +3605,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                   .fontColor,
                                               fontWeight:
                                               FontWeight.bold),
-                                        ) :   Text(CUR_CURRENCY! + "${totalamount.toString()}" ,
+                                        ) :
+                                        Text(CUR_CURRENCY! + "${advanceAmount.toString()}" ,
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .colorScheme
@@ -3904,7 +3907,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           }
 
         },
-        advanceAmount.toString(),
+        amount.toString(),
 
 
       );
@@ -4725,9 +4728,31 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                           final RadioModel result =  await Navigator.push(
                               context, MaterialPageRoute(builder: (BuildContext context) => ManageAddress(home: false,)));
                           print("checking address result here ${result.name} and ${result.addItem!.address} ${result.addItem!.id} ");
-                          //_getCart('0');
+                         //
+                          //
+                          //
+                          //
+                         //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          //
+                          // _getCart('0');
                           radioData = result;
                           await addDeliveryCharge(result.addItem!.id.toString());
+                          // await _getCart('0');
                           // await addDeliveryCharge(addressList[selectedAddress!].id.toString());
                           checkoutState!(() {
                             deliverable = false;
@@ -5399,7 +5424,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                   ) :  Text(
                                     CUR_CURRENCY! +
                                         " " +
-                                        advanceAmount.toString(),
+                                        amount.toString(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle2!

@@ -299,6 +299,7 @@ class StateMyOrder extends State<MyOrder> with TickerProviderStateMixin {
   Future<Null> getOrder() async {
     SharedPreferences prefs  = await SharedPreferences.getInstance();
     String? stateid = prefs.getString('stateId');
+    print('_____1111111_____${stateid}_________');
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
       try {

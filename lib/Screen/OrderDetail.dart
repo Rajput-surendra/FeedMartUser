@@ -446,9 +446,10 @@ class StateOrder extends State<OrderDetail>
 
 
 
-                      widget.model!.payMethod == "COD" ? Text("- " + CUR_CURRENCY! + " " + "0.00",
-                          style: Theme.of(context).textTheme.button!.copyWith(
-                              color: Theme.of(context).colorScheme.black)) :  Text("- " + CUR_CURRENCY! + " " + widget.model!.advanceAmount.toString(),
+                      // widget.model!.payMethod == "COD" ? Text("- " + CUR_CURRENCY! + " " + "0.00",
+                      //     style: Theme.of(context).textTheme.button!.copyWith(
+                      //         color: Theme.of(context).colorScheme.black)) :
+                      Text("- " + CUR_CURRENCY! + " " + widget.model!.advanceAmount.toString(),
                             style: Theme.of(context).textTheme.button!.copyWith(
                                 color: Theme.of(context).colorScheme.black))
                       ],
@@ -464,9 +465,10 @@ class StateOrder extends State<OrderDetail>
                         Text("Balance Amount" + " " + ":",
                             style: Theme.of(context).textTheme.button!.copyWith(
                                 color: Theme.of(context).colorScheme.black)),
-                        widget.model!.payMethod == "COD" ? Text("- " + CUR_CURRENCY! + " " + "0.00",
-                            style: Theme.of(context).textTheme.button!.copyWith(
-                                color: Theme.of(context).colorScheme.black)) : Text("" + CUR_CURRENCY! + " " + widget.model!.remainingAmount.toString(),
+                        // widget.model!.payMethod == "COD" ? Text("- " + CUR_CURRENCY! + " " + "0.00",
+                        //     style: Theme.of(context).textTheme.button!.copyWith(
+                        //         color: Theme.of(context).colorScheme.black)) :
+                        Text("" + CUR_CURRENCY! + " " + widget.model!.remainingAmount.toString(),
                             style: Theme.of(context).textTheme.button!.copyWith(
                                 color: Theme.of(context).colorScheme.black))
                       ],
