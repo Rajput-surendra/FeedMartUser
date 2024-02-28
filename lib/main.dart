@@ -31,11 +31,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   initializedDownload();
- // FirebaseMessaging.onBackgroundMessage(myForgroundMessageHandler);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //   statusBarColor: Colors.transparent, // status bar color
-  // ));
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   FirebaseMessaging.instance.getToken().then((value) {
@@ -137,7 +134,6 @@ class _MyAppState extends State<MyApp> {
           ],
           child: MaterialApp(
 
-            //scaffoldMessengerKey: rootScaffoldMessengerKey,
             locale: _locale,
             supportedLocales: [
               Locale("en", "US"),

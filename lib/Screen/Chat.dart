@@ -161,15 +161,6 @@ class _ChatState extends State<Chat> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    // ClipOval(child:
-                    // message.profile == null || message.profile.isEmpty? Image.asset("assets/images/placeholder.png",width: 25, height: 25,)
-                    //     :FadeInImage.assetNetwork(
-                    //   image: message.profile,
-                    //   placeholder: "assets/images/placeholder.png",
-                    //   width: 25,
-                    //   height: 25,
-                    //   fit: BoxFit.cover,
-                    // )),
                     Padding(
                       padding: EdgeInsets.only(left: 5.0),
                       child: Text(capitalize(message.name!),
